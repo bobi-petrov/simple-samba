@@ -1,21 +1,27 @@
-## https://fariszr.com/en/docker-smb-network-discovery/
-version: "3.5"
+version: "3.4"
 
 services:
   samba:
-    image: crazymax/samba
-    container_name: samba
-    network_mode: host
+    image: dperson/samba
+    environment:
+      TZ: "Europe/Sofia"
+    networks:
+      - default
+    ports:
+      - "137:137/udp"
+      - "138:138/udp"
+      - "139:139/tcp"
+      - "445:445/tcp"
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
     volumes:
-      - ./smb:/data
-      - ./downloads:/downloads
-    environment:
-      - "TZ=Europe/Sofia"
-      - "SAMBA_LOG_LEVEL=0"
-    restart: always
-  wsdd:
-    image: jonasped/wsdd
-    network_mode: host
-    environment:
-      - 'HOSTNAME=DESKTOP-L1BJQ1R'
-    restart: always
+      - /downloads:/downloads:z
+      - /downloads2:/downloads2:z
+    command: '-s "Mount;/downloads" -s "Bobs Volume;/downloads2;yes;no;no;bob" -u "bob;bobspasswd" -p'
+
+networks:
+  default:
