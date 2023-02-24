@@ -1,14 +1,13 @@
 auth:
-  - user: root
-    group: root
-    uid: 0
-    gid: 0
+  - user: foo
+    group: foo
+    uid: 1000
+    gid: 1000
     password: bar
 
 global:
-  - "force user = root"
-  - "force group = root"
-
+  - "force user = foo"
+  - "force group = foo"
 share:
   - name: downloads
     path: /downloads
