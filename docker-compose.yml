@@ -1,0 +1,21 @@
+## https://fariszr.com/en/docker-smb-network-discovery/
+version: "3.5"
+
+services:
+  samba:
+    image: crazymax/samba
+    container_name: samba
+    network_mode: host
+    volumes:
+      - ./smb:/data
+      - ./downloads:/downloads
+    environment:
+      - "TZ=Europe/Sofia"
+      - "SAMBA_LOG_LEVEL=0"
+    restart: always
+  wsdd:
+    image: jonasped/wsdd
+    network_mode: host
+    environment:
+      - 'HOSTNAME=DESKTOP-L1BJQ1R'
+    restart: always
